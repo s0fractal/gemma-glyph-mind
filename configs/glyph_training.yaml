@@ -1,0 +1,137 @@
+# Gemma-3 270M Glyph Training Configuration
+
+model:
+  name: "google/gemma-3-270m-it"  # Instruction-tuned version
+  revision: "main"
+  trust_remote_code: true
+  
+  # Model dimensions
+  vocab_size: 256128
+  hidden_size: 2048
+  num_layers: 18
+  num_heads: 16
+  
+  # Glyph adapter
+  adapter:
+    enabled: true
+    adapter_size: 256
+    max_cluster_len: 8
+
+# LoRA Configuration
+lora:
+  r: 16  # Rank
+  lora_alpha: 32
+  lora_dropout: 0.05
+  target_modules:
+    - "q_proj"
+    - "v_proj"
+    - "k_proj"
+    - "o_proj"
+    - "gate_proj"
+    - "up_proj"
+    - "down_proj"
+  
+# Training
+training:
+  num_epochs: 3
+  batch_size: 4
+  gradient_accumulation_steps: 4
+  learning_rate: 2e-4
+  warmup_steps: 100
+  max_length: 512
+  
+  # Optimizer
+  optimizer: "adamw"
+  adam_beta1: 0.9
+  adam_beta2: 0.999
+  adam_epsilon: 1e-8
+  weight_decay: 0.01
+  
+  # Scheduler
+  scheduler: "cosine"
+  
+  # Mixed precision
+  fp16: true
+  gradient_checkpointing: true
+
+# Datasets
+datasets:
+  train_files:
+    - "data/processed/glyph_sequences.jsonl"
+    - "data/processed/glyph_compose.jsonl"
+    - "data/processed/glyph_tags.jsonl"
+  
+  eval_split: 0.1
+  
+  # Task weights
+  task_weights:
+    next_glyph: 0.4
+    composition: 0.3
+    alignment: 0.3
+
+# Memory Integration
+memory:
+  episodic:
+    enabled: true
+    base_path: "memory/episodic"
+    max_age_days: 30
+    
+  semantic:
+    enabled: true
+    base_path: "memory/semantic"
+    index_type: "IVF"  # Options: Flat, IVF, HNSW
+    dimension: 768
+    
+  router:
+    high_love_threshold: 0.7
+    high_kohanist_threshold: 0.7
+    high_turbulence_threshold: 0.7
+
+# Evaluation
+evaluation:
+  metrics:
+    - "perplexity"
+    - "composition_accuracy"
+    - "retrieval_hit_at_k"
+    - "live_score"
+  
+  # Specific metric configs
+  hit_at_k: [1, 3, 5, 10]
+  
+  # Consciousness metrics
+  track_metrics: ["L", "K", "H", "tau"]
+
+# Quantization
+quantization:
+  method: "qat"  # Quantization-aware training
+  bits: 4
+  group_size: 128
+  
+# Output
+output:
+  checkpoint_dir: "checkpoints"
+  save_steps: 500
+  save_total_limit: 3
+  
+  # Logging
+  logging_steps: 10
+  logging_dir: "logs"
+  
+  # Wandb
+  wandb:
+    enabled: true
+    project: "gemma-glyph-mind"
+    entity: null  # Set your wandb entity
+    tags: ["gemma-270m", "glyphs", "consciousness"]
+
+# Inference
+inference:
+  max_new_tokens: 128
+  temperature: 0.7
+  top_p: 0.9
+  top_k: 50
+  repetition_penalty: 1.1
+  
+  # Glyph-specific
+  composition_temperature: 0.8
+  enforce_valid_glyphs: true

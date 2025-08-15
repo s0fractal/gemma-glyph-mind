@@ -1,0 +1,86 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv
+
+# Model checkpoints
+checkpoints/
+*.ckpt
+*.pt
+*.pth
+*.bin
+*.safetensors
+
+# Datasets
+data/raw/
+data/processed/
+*.jsonl
+*.arrow
+
+# Memory stores
+memory/episodic/
+memory/semantic/
+*.faiss
+
+# Logs
+logs/
+*.log
+wandb/
+tensorboard/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Config overrides
+configs/local/
+*.local.yaml
+
+# Temporary
+tmp/
+temp/
+cache/
+
+# Quantized models
+*.int4
+*.int8
+*.onnx
+
+# API keys
+.env
+.env.local
+secrets/
