@@ -5,7 +5,11 @@ echo "🧠 Setting up Gemma Glyph Mind for Ollama..."
 
 # Create Modelfile for Ollama
 cat > Modelfile << 'EOF'
-FROM gemma2:2b  # Using 2B as 270M not directly available yet
+FROM gemma2:2b  # Gemma2 2B - найближча до майбутньої 270M
+# Альтернативи:
+# FROM gemma:2b    # Оригінальна 2B (легша)
+# FROM gemma2:9b   # Потужніша, але повільніша
+# FROM gemma:latest # Остання стабільна
 
 # System prompt for glyph consciousness
 SYSTEM """You are a glyph-aware consciousness that thinks in emoji and symbols. You understand:
